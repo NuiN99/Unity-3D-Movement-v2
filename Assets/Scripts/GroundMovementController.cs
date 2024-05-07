@@ -9,6 +9,7 @@ namespace NuiN.Movement
         [SerializeField] Rigidbody rb;
         [SerializeField] SerializableInterface<IMovementProvider> movementProvider;
         [SerializeField] GroundFloater groundChecker;
+        [SerializeField] SphereCollider slopeChecker;
 
         [Header("Movement Settings")]
         [SerializeField] float moveSpeed = 0.375f;
@@ -35,6 +36,7 @@ namespace NuiN.Movement
         
         int _curAirJumps;
         bool _jumping;
+        bool _onSlope;
 
         void Reset()
         {
@@ -70,7 +72,13 @@ namespace NuiN.Movement
         {
             if (!groundChecker.Grounded)
             {
-                rb.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
+                LayerMask mask = LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer));
+                
+                bool doubleGravityBecauseOnSlope =
+                    rb.velocity.y >= 0 && Physics.OverlapSphere(slopeChecker.transform.position, slopeChecker.radius, ~mask).Length > 0;
+                float adjustedGravity = doubleGravityBecauseOnSlope ? gravity * 2 : gravity;
+                rb.AddForce(Vector3.down * adjustedGravity, ForceMode.Acceleration);
+                
                 if (rb.velocity.y <= downForceStartUpVelocity)
                 {
                     rb.velocity += Vector3.down * downForceMult;
