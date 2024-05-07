@@ -1,68 +1,73 @@
-using System.Collections;
 using System.Collections.Generic;
+using NuiN.Movement;
 using NuiN.NExtensions;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MovementDebugHUD : MonoBehaviour
 {
+    [SerializeField] VerticalLayoutGroup verticalLayout;
+    [SerializeField] MovementDebugValue debugValuePrefab;
     [SerializeField] Rigidbody rb;
-    [SerializeField] CollisionProxy playerColliison;
-    
-    [SerializeField] TMP_Text text;
+    [SerializeField] GroundFloater groundFloater;
+
+    Dictionary<string, MovementDebugValue> _debugValues = new();
 
     float _jumpStartHeight;
     float _jumpEndHeight;
     bool _jumping;
 
-    void OnEnable() => playerColliison.CollisionEnter += CollidedWithGround;
-    void OnDisable() => playerColliison.CollisionEnter -= CollidedWithGround;
+    void OnEnable() => groundFloater.OnFinishedJump += FinishedJump;
+    void OnDisable() => groundFloater.OnFinishedJump -= FinishedJump;
 
     void FixedUpdate()
     {
-        string fullText = "";
+        string speedXZ = rb.velocity.With(y: 0).magnitude.ToString("0.00");
+        UpdateOrCreateDebugValue("SPEED XZ", speedXZ);
 
-        fullText += "Speed XZ: " + rb.velocity.With(y: 0).magnitude.ToString("0.00") + "\n";
-        fullText += "Speed Y: " + rb.velocity.y.ToString("0.00") + "\n";
-
-        string jumpHeightString = (_jumpEndHeight - _jumpStartHeight).ToString("0:00");
+        string speedY = rb.velocity.y.ToString("0.00");
+        UpdateOrCreateDebugValue("SPEED Y", speedY);
 
         float curHeight = rb.position.y;
         
         if (!_jumping && rb.velocity.y > 0)
         {
-            if (rb.velocity.y > 0.1f)
-            {
-                jumpHeightString = "0.00";
-            }
-            
             _jumpStartHeight = curHeight;
             _jumpEndHeight = curHeight;
             _jumping = true;
         }
-        
-        if (_jumping && curHeight > _jumpEndHeight)
-        {
-            _jumpEndHeight = curHeight;
-            
-            float height = _jumpEndHeight - _jumpStartHeight;
 
-            if (height > 0.1f)
-            {
-                jumpHeightString = height.ToString("0.00");
-            }
-        }
-
-        fullText += "Jump Y: " + jumpHeightString + "\n";
+        if (!_jumping) return;
         
-        text.SetText(fullText);
+        float maxHeight = Mathf.Max(rb.position.y - _jumpStartHeight, _jumpEndHeight - _jumpStartHeight);
+
+        if (curHeight <= _jumpEndHeight) return;
+        _jumpEndHeight = curHeight;
+        UpdateOrCreateDebugValue("MAX Y", maxHeight.ToString("0.00"));
     }
 
-    void CollidedWithGround(Collision other)
+    void UpdateOrCreateDebugValue(string label, string value)
     {
-        _jumpStartHeight = float.MinValue;
-        _jumpEndHeight = float.MinValue;
+        if (_debugValues.TryGetValue(label, out MovementDebugValue debugValue))
+        {
+            debugValue.SetValueText(value);
+            return;
+        }
+        _debugValues.Add(label, InitializeDebugValue(label, value));
+    }
+    
+    MovementDebugValue InitializeDebugValue(string label, string value)
+    {
+        MovementDebugValue debugValue = Instantiate(debugValuePrefab, verticalLayout.transform);
+        debugValue.SetlabelText(label);
+        debugValue.SetValueText(value);
+
+        return debugValue;
+    }
+
+    void FinishedJump()
+    {
+        UpdateOrCreateDebugValue("MAX Y", (_jumpEndHeight - _jumpStartHeight).ToString("0.00"));
         _jumping = false;
     }
 }
