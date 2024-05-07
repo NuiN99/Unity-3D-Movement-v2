@@ -14,7 +14,7 @@ namespace NuiN.Movement
         [SerializeField] float moveSpeed = 0.375f;
         [SerializeField] float runSpeedMult = 1.5f;
         [SerializeField] float maxAirVelocityMagnitude = 6.2f;
-        [SerializeField] float groundSpeedMult = 1.8f;
+        [SerializeField] float groundSpeedMult = 2.85f;
         [SerializeField] float groundDrag = 15f;
         [SerializeField] float airDrag = 0.002f;
         [SerializeField] float airNoInputCounteractMult = 0.01f;

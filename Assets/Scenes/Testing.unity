@@ -513,7 +513,7 @@ MonoBehaviour:
   moveSpeed: 0.375
   runSpeedMult: 1.5
   maxAirVelocityMagnitude: 6.2
-  groundSpeedMult: 1.8
+  groundSpeedMult: 2.85
   groundDrag: 15
   airDrag: 0.002
   airNoInputCounteractMult: 0.01
@@ -846,7 +846,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117992911}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
