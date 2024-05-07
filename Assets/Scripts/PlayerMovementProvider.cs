@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace NuiN.Movement
 {
-    public class PlayerMovementProvider : MonoBehaviour, IMovementProviderWithHead
+    public class PlayerMovementProvider : MonoBehaviour, IMovementProvider
     {
         public event Action OnJump;
         public bool Sprinting => useActions ? sprintAction.IsPressed() : sprintActionReference.action.IsPressed();
@@ -34,10 +34,10 @@ namespace NuiN.Movement
         void Awake()
         {
             sprintAction?.Enable();
-            sprintActionReference?.action?.Enable();
+            if (sprintActionReference != null) sprintActionReference.action?.Enable();
             
             jumpAction?.Enable();
-            jumpActionReference?.action?.Enable();
+            if (jumpActionReference != null) jumpActionReference.action?.Enable();
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = true;

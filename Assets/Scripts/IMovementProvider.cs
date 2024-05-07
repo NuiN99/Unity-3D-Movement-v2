@@ -5,11 +5,11 @@ namespace NuiN.Movement
 {
     public interface IMovementProvider
     {
-        public bool Sprinting { get; }
+        bool Sprinting { get; }
+        event Action OnJump;
         
         Vector3 GetDirection();
         Quaternion GetRotation();
-
-        event Action OnJump;
+        Quaternion GetHeadRotation() => default;
     }
 }

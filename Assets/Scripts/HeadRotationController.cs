@@ -6,7 +6,7 @@ namespace NuiN.Movement
     public class HeadRotationController : MonoBehaviour
     {
         [SerializeField] Transform head;
-        [SerializeField] SerializableInterface<IMovementProviderWithHead> movementProvider; 
+        [SerializeField] SerializableInterface<IMovementProvider> movementProvider; 
 
         void LateUpdate()
         {

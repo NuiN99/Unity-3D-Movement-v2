@@ -17,6 +17,10 @@ namespace NuiN.Movement
         {
             _constraintDuration -= Time.deltaTime;
             Constrained = _constraintDuration > 0;
+            
+            DeltaTick();
         }
+
+        protected abstract void DeltaTick();
     }
 }
