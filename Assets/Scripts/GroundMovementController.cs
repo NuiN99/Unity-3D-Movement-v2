@@ -27,8 +27,9 @@ namespace NuiN.Movement
         [SerializeField] SimpleTimer jumpDelay = new(0.2f);
         [SerializeField] float jumpForce = 6f;
         [SerializeField] int maxAirJumps = 1;
-        
-        [Header("Down Force")]
+
+        [Header("Down Force")] 
+        [SerializeField] float gravity = 20f;
         [SerializeField] float downForceMult = 0.15f;
         [SerializeField] float downForceStartUpVelocity = 3f;
         
@@ -60,11 +61,20 @@ namespace NuiN.Movement
             groundChecker.OnFinishedJump -= SetJumpingFalse;
         }
 
+        void Start()
+        {
+            rb.useGravity = false;
+        }
+
         void FixedUpdate()
         {
-            if (!groundChecker.Grounded && rb.velocity.y <= downForceStartUpVelocity)
+            if (!groundChecker.Grounded)
             {
-                rb.velocity += Vector3.down * downForceMult;
+                rb.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
+                if (rb.velocity.y <= downForceStartUpVelocity)
+                {
+                    rb.velocity += Vector3.down * downForceMult;
+                }
             }
             
             if (Constrained) return;
