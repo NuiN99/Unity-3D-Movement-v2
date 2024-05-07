@@ -84,9 +84,9 @@ MonoBehaviour:
     rawReference:
       rid: -2
   groundChecker: {fileID: 2395842655051434114}
-  moveSpeed: 0.375
-  runSpeedMult: 1.5
-  maxAirVelocityMagnitude: 6.2
+  moveSpeed: 0.45
+  runSpeedMult: 2
+  maxAirVelocityMagnitude: 7.3
   groundSpeedMult: 2.85
   groundDrag: 15
   airDrag: 0.002
@@ -95,7 +95,7 @@ MonoBehaviour:
   runningRotateSpeed: 99999
   jumpDelay:
     duration: 0.2
-    startCompleted: 1
+    startCompleted: 0
   jumpForce: 10
   maxAirJumps: 1
   gravity: 25
@@ -358,7 +358,7 @@ Transform:
   m_GameObject: {fileID: 9005826203182669203}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
