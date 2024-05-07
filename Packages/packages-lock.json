@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.nuin.scriptableharmony": {
+      "version": "https://github.com/NuiN99/Scriptable-Harmony-Package.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "7a878ffbf4773e6f919cdea8d1a07551f2f8dcfb"
+    },
     "com.unity.burst": {
       "version": "1.8.13",
       "depth": 1,

@@ -1,21 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace NuiN.Movement
 {
-    public class IMovementProvider : MonoBehaviour
+    public interface IMovementProvider
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public bool Sprinting { get; }
         
-        }
+        Vector3 GetDirection();
+        Quaternion GetRotation();
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        event Action OnJump;
     }
 }

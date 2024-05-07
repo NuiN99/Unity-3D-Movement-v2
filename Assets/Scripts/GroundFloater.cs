@@ -1,3 +1,5 @@
+using System;
+using NuiN.NExtensions;
 using UnityEngine;
 
 namespace NuiN.Movement
@@ -5,7 +7,8 @@ namespace NuiN.Movement
     public class GroundFloater : MonoBehaviour
     {
         public bool Grounded { get; private set; }
-
+        public event Action OnFinishedJump;
+        
         [Header("Dependencies")]
         [SerializeField] Rigidbody rb;
 
@@ -25,22 +28,36 @@ namespace NuiN.Movement
         Vector3 RayDir => Vector3.down;
         float Height => transform.localScale.y;
 
-        void Reset() => rb = Helpers.GetRidibodyInHierarchy(transform);
-        void OnValidate() => rb = rb == null ? Helpers.GetRidibodyInHierarchy(transform) : rb;
+        bool _jumping;
+        bool _wasNotGrounded;
+
+        void Reset() => rb = this.GetInHierarchy<Rigidbody>();
+        void OnValidate() => rb = rb == null ? this.GetInHierarchy<Rigidbody>() : rb;
 
         void FixedUpdate()
         {
+            if (rb.velocity.y < 0 && _jumping)
+            {
+                 _wasNotGrounded = true;
+                _jumping = false;
+            }
+
             Vector3 rayStart = RayStart;
             Vector3 rayDir = RayDir;
 
             Grounded = IsGrounded(rayStart, rayDir, out RaycastHit hit);
-            if (!Grounded) return;
+            if ( _wasNotGrounded && Grounded)
+            {
+                _wasNotGrounded = false;
+                OnFinishedJump?.Invoke();
+            }
+            
+            if (!Grounded || _jumping) return;
 
             Vector3 vel = rb.velocity;
-            Vector3 otherVel = default;
 
             bool hitOtherRB = hit.collider.TryGetComponent(out Rigidbody otherRB);
-            otherVel = hitOtherRB ? otherRB.velocity : default;
+            Vector3 otherVel = hitOtherRB ? otherRB.velocity : default;
 
             float rayDirVel = Vector3.Dot(rayDir, vel);
             float otherDirVel = Vector3.Dot(rayDir, otherVel);
@@ -64,9 +81,14 @@ namespace NuiN.Movement
             return Physics.Raycast(rayStart, rayDir, out hit, floatHeight, groundMask);
         }
 
+        public void Jump()
+        {
+            _jumping = true;
+        }
+
         void OnDrawGizmos()
         {
-            if (!drawGizmos) return;
+            if (!drawGizmos || _jumping) return;
 
             Vector3 maxRayEnd = RayStart + RayDir * floatHeight;
             

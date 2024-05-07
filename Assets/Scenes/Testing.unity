@@ -160,7 +160,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -209,12 +209,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1343988821}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -437,6 +437,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1343988821}
   - component: {fileID: 1343988822}
+  - component: {fileID: 1343988824}
+  - component: {fileID: 1343988826}
+  - component: {fileID: 1343988825}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -457,6 +460,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 330585546}
   - {fileID: 2117992912}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -487,6 +491,85 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!114 &1343988824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343988820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc5082da363b49b794b9195d5228c16e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 1343988822}
+  movementProvider:
+    mode: 0
+    unityReference: {fileID: 1343988826}
+    rawReference:
+      rid: -2
+  groundChecker: {fileID: 2117992916}
+  moveSpeed: 0.375
+  runSpeedMult: 1.5
+  maxAirVelocityMagnitude: 6.2
+  groundSpeedMult: 1.8
+  groundDrag: 15
+  airDrag: 0.002
+  airNoInputCounteractMult: 0.01
+  walkingRotateSpeed: 99999
+  runningRotateSpeed: 99999
+  jumpDelay:
+    duration: 0.2
+    startCompleted: 1
+  jumpForce: 6
+  maxAirJumps: 1
+  downForceMult: 0.15
+  downForceStartUpVelocity: 3
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!114 &1343988825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343988820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24de2f5049fc46108fe679c5229d3fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  head: {fileID: 330585546}
+  movementProvider:
+    mode: 0
+    unityReference: {fileID: 1343988826}
+    rawReference:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!114 &1343988826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343988820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07ec2a230f44d4680ad3c36ef1cde14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprintKey: 304
+  jumpKey: 32
+  lookSensitivity: 3.5
+  yRotationLimit: 88
 --- !u!1 &1362472697
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +823,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117992911}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e4f7c605743d51e4c905e13f27e6a421, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -821,7 +904,7 @@ MonoBehaviour:
   rb: {fileID: 1343988822}
   floatHeight: 1
   floatSpring: 2
-  floatDamper: 0.25
+  floatDamper: 0.1
   affectOthers: 0
   groundMask:
     serializedVersion: 2
@@ -833,7 +916,6 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1343988821}
