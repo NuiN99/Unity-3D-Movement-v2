@@ -7,10 +7,12 @@ namespace NuiN.Movement
     public class GroundFloater : MonoBehaviour
     {
         public bool Grounded { get; private set; }
+        public Vector3 GroundPoint { get; private set; }
         public event Action OnFinishedJump;
         
         [Header("Dependencies")]
         [SerializeField] Rigidbody rb;
+        [SerializeField] CollisionProxy collisionProxy;
 
         [Header("Settings")]
         [SerializeField] float floatHeight = 0.75f;
@@ -31,8 +33,20 @@ namespace NuiN.Movement
         bool _jumping;
         bool _wasNotGrounded;
 
-        void Reset() => rb = this.GetInHierarchy<Rigidbody>();
-        void OnValidate() => rb = rb == null ? this.GetInHierarchy<Rigidbody>() : rb;
+        void Reset()
+        {
+            rb = this.GetInHierarchy<Rigidbody>();
+            collisionProxy = this.GetInHierarchy<CollisionProxy>();
+        }
+
+        void OnValidate()
+        {
+            rb = rb == null ? this.GetInHierarchy<Rigidbody>() : rb;
+            collisionProxy = collisionProxy == null ? this.GetInHierarchy<CollisionProxy>() : collisionProxy;
+        }
+
+        void OnEnable() => collisionProxy.CollisionStay += Colliding;
+        void OnDisable() => collisionProxy.CollisionStay -= Colliding;
 
         void FixedUpdate()
         {
@@ -46,13 +60,19 @@ namespace NuiN.Movement
             Vector3 rayDir = RayDir;
 
             Grounded = IsGrounded(rayStart, rayDir, out RaycastHit hit);
-            if ( _wasNotGrounded && Grounded)
+            GroundPoint = hit.point;
+            if (_wasNotGrounded && Grounded)
             {
+                Debug.Log("test");
                 _wasNotGrounded = false;
                 OnFinishedJump?.Invoke();
             }
-            
-            if (!Grounded || _jumping) return;
+
+            if (!Grounded || _jumping)
+            {
+                Grounded = false;
+                return;
+            }
 
             Vector3 vel = rb.velocity;
 
@@ -84,6 +104,13 @@ namespace NuiN.Movement
         public void Jump()
         {
             _jumping = true;
+            _wasNotGrounded = true;
+        }
+
+        void Colliding(Collision other)
+        {
+            Debug.Log("idk");
+            _jumping = false;
         }
 
         void OnDrawGizmos()
