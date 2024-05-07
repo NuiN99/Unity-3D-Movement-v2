@@ -84,6 +84,7 @@ namespace NuiN.Movement
 
         protected override void DeltaTick()
         {
+            if (Constrained) return;
             Rotate();
         }
 
