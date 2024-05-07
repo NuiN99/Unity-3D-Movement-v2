@@ -7,7 +7,6 @@ namespace NuiN.Movement
     public class GroundFloater : MonoBehaviour
     {
         public bool Grounded { get; private set; }
-        public Vector3 GroundPoint { get; private set; }
         public event Action OnFinishedJump;
         
         [Header("Dependencies")]
@@ -60,10 +59,8 @@ namespace NuiN.Movement
             Vector3 rayDir = RayDir;
 
             Grounded = IsGrounded(rayStart, rayDir, out RaycastHit hit);
-            GroundPoint = hit.point;
             if (_wasNotGrounded && Grounded)
             {
-                Debug.Log("test");
                 _wasNotGrounded = false;
                 OnFinishedJump?.Invoke();
             }
@@ -109,7 +106,6 @@ namespace NuiN.Movement
 
         void Colliding(Collision other)
         {
-            Debug.Log("idk");
             _jumping = false;
         }
 

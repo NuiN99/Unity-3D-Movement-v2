@@ -96,9 +96,9 @@ MonoBehaviour:
   jumpDelay:
     duration: 0.2
     startCompleted: 1
-  jumpForce: 9
+  jumpForce: 10
   maxAirJumps: 1
-  gravity: 20
+  gravity: 25
   downForceMult: 0.15
   downForceStartUpVelocity: 3
   references:
