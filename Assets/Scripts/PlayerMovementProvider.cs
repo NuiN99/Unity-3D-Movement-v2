@@ -1,12 +1,14 @@
 using System;
+using NuiN.NExtensions;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace NuiN.Movement
 {
     public class PlayerMovementProvider : MonoBehaviour, IMovementProviderWithHead
     {
         public event Action OnJump;
-        public bool Sprinting => Input.GetKey(sprintKey);
+        public bool Sprinting => useActions ? sprintAction.IsPressed() : sprintActionReference.action.IsPressed();
         
         const string AXIS_X = "Horizontal";
         const string AXIS_Y = "Vertical";
@@ -15,9 +17,14 @@ namespace NuiN.Movement
         const string MOUSE_Y = "Mouse Y";
     
         Vector2 _rotation;
-    
-        [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-        [SerializeField] KeyCode jumpKey = KeyCode.Space;
+
+        [SerializeField] bool useActions;
+        
+        [SerializeField, ShowIf(nameof(useActions), true)] InputAction sprintAction;
+        [SerializeField, ShowIf(nameof(useActions), true)] InputAction jumpAction;
+        
+        [SerializeField, ShowIf(nameof(useActions), false)] InputActionReference sprintActionReference;
+        [SerializeField, ShowIf(nameof(useActions), false)] InputActionReference jumpActionReference;
     
         [SerializeField] float lookSensitivity = 20f;
         [Range(0f, 90f)][SerializeField] float yRotationLimit = 88f;
@@ -26,13 +33,30 @@ namespace NuiN.Movement
 
         void Awake()
         {
+            sprintAction?.Enable();
+            sprintActionReference?.action?.Enable();
+            
+            jumpAction?.Enable();
+            jumpActionReference?.action?.Enable();
+            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = true;
         }
 
-        void Update()
+        void OnEnable()
         {
-            if(Input.GetKeyDown(jumpKey)) OnJump?.Invoke();
+            if (useActions) jumpAction.performed += HandleJump;
+            else jumpActionReference.action.performed += HandleJump; 
+        }
+        void OnDisable()
+        {
+            if (useActions) jumpAction.performed -= HandleJump;
+            else jumpActionReference.action.performed -= HandleJump;
+        }
+
+        void HandleJump(InputAction.CallbackContext context)
+        {
+            OnJump?.Invoke();
         }
 
         public Vector3 GetDirection()
