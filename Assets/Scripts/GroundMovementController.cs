@@ -7,7 +7,7 @@ namespace NuiN.Movement
     public class GroundMovementController : Movement
     {
         [SerializeField] Rigidbody rb;
-        [SerializeField] SerializableInterface<IMovementProvider> movementProvider;
+        [SerializeField] protected SerializableInterface<IMovementProvider> movementProvider;
         [SerializeField] GroundFloater groundChecker;
         [SerializeField] SphereCollider slopeChecker;
 
@@ -19,10 +19,6 @@ namespace NuiN.Movement
         [SerializeField] float groundDrag = 15f;
         [SerializeField] float airDrag = 0.002f;
         [SerializeField] float airNoInputCounteractMult = 0.01f;
-        
-        [Header("Rotation Settings")]
-        [SerializeField] float walkingRotateSpeed = 99999f;
-        [SerializeField] float runningRotateSpeed = 99999f;
         
         [Header("Jump Settings")] 
         [SerializeField] SimpleTimer jumpDelay = new(0.2f);
@@ -136,12 +132,9 @@ namespace NuiN.Movement
             rb.velocity += moveVector.With(y: 0);
         }
 
-        void Rotate()
+        protected virtual void Rotate()
         {
-            Quaternion rotation = movementProvider.Value.GetRotation();
-            float rotateSpeed = movementProvider.Value.Sprinting ? runningRotateSpeed : walkingRotateSpeed;
-
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotateSpeed);
+            transform.rotation = movementProvider.Value.GetRotation();
         }
 
         void Jump()
@@ -158,6 +151,7 @@ namespace NuiN.Movement
             if (groundChecker.Grounded || groundChecker.InCoyoteTime)
             {
                 _curAirJumps = 0;
+                
                 rb.velocity = vel.With(y: jumpForce);
                 return;
             }

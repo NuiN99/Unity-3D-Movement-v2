@@ -226,23 +226,23 @@ MonoBehaviour:
         m_Flags: 8
       m_Flags: 0
     m_Reference: {fileID: 0}
-  mouseAxisAction:
+  rotateAxisAction:
     m_UseReference: 0
     m_Action:
-      m_Name: Mouse Axis
+      m_Name: Rotate Axis
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 3a003e4d-cb9e-4020-9488-e879531c56c1
+      m_Id: 23f9c1ea-42c4-4753-8ac3-3e9f5d179a1a
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 9c209c48-1ad1-4343-a583-495b9b72389c
+        m_Id: 437910f7-65c7-4c22-9059-316759b3d08b
         m_Path: <Mouse>/delta
         m_Interactions: 
         m_Processors: 
         m_Groups: 
-        m_Action: Mouse Axis
+        m_Action: Rotate Axis
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}

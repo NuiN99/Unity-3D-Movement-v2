@@ -1,17 +1,18 @@
-using System;
-using NuiN.NExtensions;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace NuiN.Movement
 {
-    public class PlayerMovementProvider : MonoBehaviour, IMovementProvider
+    public class XRPlayerMovementProvider : MonoBehaviour, IMovementProvider
     {
         public event Action OnJump;
         public bool Sprinting => toggleSprint ? _sprintToggled : sprintAction.action.IsPressed();
-        
-        Vector2 _rotation;
+        public float LookSensitivity => lookSensitivity;
+        public float RotationAxis => rotateAxisAction.action.ReadValue<Vector2>().x;
 
+        [SerializeField] Transform playerHead;
+        
         [SerializeField] InputActionProperty moveAxisAction;
         [SerializeField] InputActionProperty rotateAxisAction;
         [SerializeField] InputActionProperty jumpAction;
@@ -19,9 +20,8 @@ namespace NuiN.Movement
 
         [SerializeField] bool toggleSprint;
         [SerializeField] float lookSensitivity = 20f;
-        [Range(0f, 90f)][SerializeField] float yRotationLimit = 88f;
 
-        Quaternion _headRotation;
+        Vector2 _rotation;
         bool _sprintToggled;
 
         void Awake()
@@ -72,16 +72,8 @@ namespace NuiN.Movement
             Vector2 axis = rotateAxisAction.action.ReadValue<Vector2>();
             _rotation.x += axis.x * lookSensitivity;
             _rotation.y += axis.y * lookSensitivity;
-            _rotation.y = Mathf.Clamp(_rotation.y, -yRotationLimit, yRotationLimit);
 
-            var xQuat = Quaternion.AngleAxis(_rotation.x, Vector3.up);
-            var yQuat = Quaternion.AngleAxis(_rotation.y, Vector3.left);
-        
-            _headRotation = yQuat;
-
-            return xQuat;
+            return Quaternion.AngleAxis(_rotation.x, Vector3.up);
         }
-
-        public Quaternion GetHeadRotation() => _headRotation;
     }
 }

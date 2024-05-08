@@ -16,10 +16,10 @@ namespace NuiN.Movement
         [SerializeField] CollisionProxy collisionProxy;
 
         [Header("Settings")]
-        [SerializeField] float floatHeight = 0.75f;
+        [SerializeField] protected float floatHeight = 1f;
         [SerializeField] float floatSpring = 2f;
-        [SerializeField] float floatDamper = 1f;
-        [SerializeField] SimpleTimer coyoteTime = new(0.25f, true);
+        [SerializeField] float floatDamper = 0.1f;
+        [SerializeField] SimpleTimer coyoteTime = new(0.15f, true);
         [SerializeField] bool affectOthers;
         [SerializeField] LayerMask groundMask = ~0;
 
