@@ -7,6 +7,8 @@ namespace NuiN.Movement
     public class GroundFloater : MonoBehaviour
     {
         public bool Grounded { get; private set; }
+        public bool InCoyoteTime { get; private set; }
+        
         public event Action OnFinishedJump;
         
         [Header("Dependencies")]
@@ -17,6 +19,7 @@ namespace NuiN.Movement
         [SerializeField] float floatHeight = 0.75f;
         [SerializeField] float floatSpring = 2f;
         [SerializeField] float floatDamper = 1f;
+        [SerializeField] SimpleTimer coyoteTime = new(0.25f, true);
         [SerializeField] bool affectOthers;
         [SerializeField] LayerMask groundMask = ~0;
 
@@ -31,6 +34,7 @@ namespace NuiN.Movement
 
         bool _jumping;
         bool _wasNotGrounded;
+        bool _usedCoyoteTimeThisJump;
 
         void Reset()
         {
@@ -59,6 +63,23 @@ namespace NuiN.Movement
             Vector3 rayDir = RayDir;
 
             Grounded = IsGrounded(rayStart, rayDir, out RaycastHit hit);
+
+            if (!_usedCoyoteTimeThisJump && !_wasNotGrounded && !Grounded && !InCoyoteTime)
+            {
+                InCoyoteTime = true;
+                _usedCoyoteTimeThisJump = false;
+            }
+            
+            if (InCoyoteTime)
+            {
+                bool coyoteTimeComplete = coyoteTime.Complete();
+                if (Grounded || coyoteTimeComplete)
+                {
+                    InCoyoteTime = false;
+                    _usedCoyoteTimeThisJump = false;
+                }
+            }
+            
             if (_wasNotGrounded && Grounded)
             {
                 _wasNotGrounded = false;
@@ -100,12 +121,16 @@ namespace NuiN.Movement
 
         public void Jump()
         {
+            if (InCoyoteTime) _usedCoyoteTimeThisJump = true;
+            else _usedCoyoteTimeThisJump = false;
+            
             _jumping = true;
             _wasNotGrounded = true;
         }
 
         void Colliding(Collision other)
         {
+            _usedCoyoteTimeThisJump = false;
             _jumping = false;
         }
 

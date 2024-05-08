@@ -658,6 +658,9 @@ MonoBehaviour:
   floatHeight: 1
   floatSpring: 2
   floatDamper: 0.1
+  coyoteTime:
+    duration: 0.15
+    startCompleted: 1
   affectOthers: 0
   groundMask:
     serializedVersion: 2

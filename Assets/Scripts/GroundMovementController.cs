@@ -26,7 +26,7 @@ namespace NuiN.Movement
         
         [Header("Jump Settings")] 
         [SerializeField] SimpleTimer jumpDelay = new(0.2f);
-        [SerializeField] float jumpForce = 6f;
+        [SerializeField] float jumpForce = 11f;
         [SerializeField] int maxAirJumps = 1;
 
         [Header("Down Force")] 
@@ -155,7 +155,7 @@ namespace NuiN.Movement
 
             Vector3 vel = rb.velocity;
             
-            if (groundChecker.Grounded)
+            if (groundChecker.Grounded || groundChecker.InCoyoteTime)
             {
                 _curAirJumps = 0;
                 rb.velocity = vel.With(y: jumpForce);
