@@ -12,7 +12,9 @@ namespace NuiN.Movement
         public float LookSensitivity => lookSensitivity;
         public float RotationAxis => rotateAxisAction.action.ReadValue<Vector2>().x;
 
-        [SerializeField] Transform playerHead;
+        [SerializeField] bool controllerRelative;
+        [SerializeField, ShowIf(nameof(controllerRelative), false)] Transform playerHead;
+        [SerializeField, ShowIf(nameof(controllerRelative), true)] Transform playerHand;
         
         [SerializeField] InputActionProperty moveAxisAction;
         [SerializeField] InputActionProperty rotateAxisAction;
@@ -55,8 +57,9 @@ namespace NuiN.Movement
         {
             Vector2 axis = moveAxisAction.action.ReadValue<Vector2>();
 
-            Vector3 forward = playerHead.forward.With(y:0);
-            Vector3 right = playerHead.right.With(y:0);
+            Transform relativeTransform = controllerRelative ? playerHand : playerHead;
+            Vector3 forward = relativeTransform.forward;
+            Vector3 right = relativeTransform.right;
 
             forward.y = 0f;
             right.y = 0f;

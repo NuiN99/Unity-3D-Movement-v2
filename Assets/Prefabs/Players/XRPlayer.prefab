@@ -7733,7 +7733,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d3671d74a44167b2fa34597d7d43b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controllerRelative: 0
   playerHead: {fileID: 6476154280490124074}
+  playerHand: {fileID: 5753536296603003850}
   moveAxisAction:
     m_UseReference: 0
     m_Action:
