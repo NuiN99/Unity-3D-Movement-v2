@@ -145,7 +145,7 @@ MonoBehaviour:
   groundSpeedMult: 2.85
   groundDrag: 15
   airDrag: 0.002
-  airNoInputCounteractMult: 0.05
+  airNoInputCounteractMult: 0.02
   walkingRotateSpeed: 99999
   runningRotateSpeed: 99999
   jumpDelay:
