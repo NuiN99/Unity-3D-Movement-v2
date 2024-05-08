@@ -173,44 +173,119 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07ec2a230f44d4680ad3c36ef1cde14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useActions: 1
-  sprintAction:
-    m_Name: Sprint
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 0bdaccbe-f97c-4736-88c1-538ec274f115
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 10fc1a3f-cfdb-46cc-bd21-16c4dca241ac
-      m_Path: <Keyboard>/leftShift
-      m_Interactions: 
+  moveAxisAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Move Axis
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 3b54c333-cf64-49ce-b92f-f1fc6bb9eb5b
       m_Processors: 
-      m_Groups: 
-      m_Action: Sprint
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 2D Vector
+        m_Id: 3261ac95-f89e-49fa-b0fe-e6c19e835fdc
+        m_Path: 2DVector
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move Axis
+        m_Flags: 4
+      - m_Name: up
+        m_Id: 8144922a-f800-41dc-9b44-e0d1b68a3d9f
+        m_Path: <Keyboard>/w
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move Axis
+        m_Flags: 8
+      - m_Name: down
+        m_Id: 41744a65-13be-42a6-9c9a-7e7b9bf48771
+        m_Path: <Keyboard>/s
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move Axis
+        m_Flags: 8
+      - m_Name: left
+        m_Id: fd609131-4643-4fe5-8054-f716c78d7f2e
+        m_Path: <Keyboard>/a
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move Axis
+        m_Flags: 8
+      - m_Name: right
+        m_Id: 7d2eaacc-13e5-4828-8b72-5476c0bf1912
+        m_Path: <Keyboard>/d
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move Axis
+        m_Flags: 8
       m_Flags: 0
-    m_Flags: 0
+    m_Reference: {fileID: 0}
+  mouseAxisAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Mouse Axis
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 3a003e4d-cb9e-4020-9488-e879531c56c1
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 9c209c48-1ad1-4343-a583-495b9b72389c
+        m_Path: <Mouse>/delta
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Mouse Axis
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
   jumpAction:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 5f7d3a49-4c7c-4c92-8e67-6a60317ae139
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 80da8e71-c059-4408-ae2b-6e443cbd5bcd
-      m_Path: <Keyboard>/space
-      m_Interactions: 
+    m_UseReference: 0
+    m_Action:
+      m_Name: Jump
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 32b46464-e930-4f7b-89e0-782ea1029767
       m_Processors: 
-      m_Groups: 
-      m_Action: Jump
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: c31c978e-d30d-4128-8fa7-22d2a7000406
+        m_Path: <Keyboard>/space
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Jump
+        m_Flags: 0
       m_Flags: 0
-    m_Flags: 0
-  sprintActionReference: {fileID: 0}
-  jumpActionReference: {fileID: 0}
-  lookSensitivity: 3.5
+    m_Reference: {fileID: 0}
+  sprintAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Sprint
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: b74cbea0-d510-4d76-9c79-4bb99015c4ec
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 794ce310-a751-41e4-a669-7ef1e1a51e40
+        m_Path: <Keyboard>/leftShift
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Sprint
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  lookSensitivity: 0.1
   yRotationLimit: 88
 --- !u!114 &8935677089068081699
 MonoBehaviour:

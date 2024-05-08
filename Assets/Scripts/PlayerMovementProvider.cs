@@ -8,23 +8,14 @@ namespace NuiN.Movement
     public class PlayerMovementProvider : MonoBehaviour, IMovementProvider
     {
         public event Action OnJump;
-        public bool Sprinting => useActions ? sprintAction.IsPressed() : sprintActionReference.action.IsPressed();
+        public bool Sprinting => sprintAction.action.IsPressed();
         
-        const string AXIS_X = "Horizontal";
-        const string AXIS_Y = "Vertical";
-    
-        const string MOUSE_X = "Mouse X";
-        const string MOUSE_Y = "Mouse Y";
-    
         Vector2 _rotation;
 
-        [SerializeField] bool useActions;
-        
-        [SerializeField, ShowIf(nameof(useActions), true)] InputAction sprintAction;
-        [SerializeField, ShowIf(nameof(useActions), true)] InputAction jumpAction;
-        
-        [SerializeField, ShowIf(nameof(useActions), false)] InputActionReference sprintActionReference;
-        [SerializeField, ShowIf(nameof(useActions), false)] InputActionReference jumpActionReference;
+        [SerializeField] InputActionProperty moveAxisAction;
+        [SerializeField] InputActionProperty mouseAxisAction;
+        [SerializeField] InputActionProperty jumpAction;
+        [SerializeField] InputActionProperty sprintAction;
     
         [SerializeField] float lookSensitivity = 20f;
         [Range(0f, 90f)][SerializeField] float yRotationLimit = 88f;
@@ -33,26 +24,17 @@ namespace NuiN.Movement
 
         void Awake()
         {
-            sprintAction?.Enable();
-            if (sprintActionReference != null) sprintActionReference.action?.Enable();
-            
-            jumpAction?.Enable();
-            if (jumpActionReference != null) jumpActionReference.action?.Enable();
-            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = true;
+            
+            moveAxisAction.Enable();
+            mouseAxisAction.Enable();
+            jumpAction.Enable();
+            sprintAction.Enable();
         }
 
-        void OnEnable()
-        {
-            if (useActions) jumpAction.performed += HandleJump;
-            else jumpActionReference.action.performed += HandleJump; 
-        }
-        void OnDisable()
-        {
-            if (useActions) jumpAction.performed -= HandleJump;
-            else jumpActionReference.action.performed -= HandleJump;
-        }
+        void OnEnable() => jumpAction.AddHandler(HandleJump);
+        void OnDisable() => jumpAction.RemoveHandler(HandleJump);
 
         void HandleJump(InputAction.CallbackContext context)
         {
@@ -61,8 +43,7 @@ namespace NuiN.Movement
 
         public Vector3 GetDirection()
         {
-            float x = Input.GetAxisRaw(AXIS_X);
-            float z = Input.GetAxisRaw(AXIS_Y);
+            Vector2 axis = moveAxisAction.action.ReadValue<Vector2>();
 
             Vector3 forward = transform.forward;
             Vector3 right = transform.right;
@@ -72,15 +53,16 @@ namespace NuiN.Movement
             forward.Normalize();
             right.Normalize();
 
-            Vector3 desiredMoveDirection = forward * z + right * x;
+            Vector3 desiredMoveDirection = forward * axis.y + right * axis.x;
 
             return desiredMoveDirection.normalized;
         }
     
         public Quaternion GetRotation()
         {
-            _rotation.x += Input.GetAxis(MOUSE_X) * lookSensitivity;
-            _rotation.y += Input.GetAxis(MOUSE_Y) * lookSensitivity;
+            Vector2 axis = mouseAxisAction.action.ReadValue<Vector2>();
+            _rotation.x += axis.x * lookSensitivity;
+            _rotation.y += axis.y * lookSensitivity;
             _rotation.y = Mathf.Clamp(_rotation.y, -yRotationLimit, yRotationLimit);
 
             var xQuat = Quaternion.AngleAxis(_rotation.x, Vector3.up);
