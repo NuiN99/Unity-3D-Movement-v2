@@ -1,4 +1,5 @@
 ﻿using System;
+using NuiN.NExtensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -54,8 +55,8 @@ namespace NuiN.Movement
         {
             Vector2 axis = moveAxisAction.action.ReadValue<Vector2>();
 
-            Vector3 forward = transform.forward;
-            Vector3 right = transform.right;
+            Vector3 forward = playerHead.forward.With(y:0);
+            Vector3 right = playerHead.right.With(y:0);
 
             forward.y = 0f;
             right.y = 0f;
